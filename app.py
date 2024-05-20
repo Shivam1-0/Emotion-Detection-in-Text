@@ -24,7 +24,7 @@ emotions_emoji_dict = {"anger": "😠", "disgust": "🤮", "fear": "😨😱", "
 # Main Application
 def main():
     st.title("Emotion Classifier App")
-    menu = ["Home", "Monitor", "About"]
+    menu = ["Home", "About"]
     choice = st.sidebar.selectbox("Menu", menu)
     create_page_visited_table()
     create_emotionclf_table()
@@ -62,30 +62,9 @@ def main():
                 fig = alt.Chart(proba_df_clean).mark_bar().encode(x='emotions', y='probability', color='emotions')
                 st.altair_chart(fig, use_container_width=True)
 
-    elif choice == "Monitor":
-        add_page_visited_details("Monitor", datetime.now(IST))
-        st.subheader("Monitor App")
+    
 
-        with st.expander("Page Metrics"):
-            page_visited_details = pd.DataFrame(view_all_page_visited_details(), columns=['Page Name', 'Time of Visit'])
-            st.dataframe(page_visited_details)
-
-            pg_count = page_visited_details['Page Name'].value_counts().rename_axis('Page Name').reset_index(name='Counts')
-            c = alt.Chart(pg_count).mark_bar().encode(x='Page Name', y='Counts', color='Page Name')
-            st.altair_chart(c, use_container_width=True)
-
-            p = px.pie(pg_count, values='Counts', names='Page Name')
-            st.plotly_chart(p, use_container_width=True)
-
-        with st.expander('Emotion Classifier Metrics'):
-            df_emotions = pd.DataFrame(view_all_prediction_details(), columns=['Rawtext', 'Prediction', 'Probability', 'Time_of_Visit'])
-            st.dataframe(df_emotions)
-
-            prediction_count = df_emotions['Prediction'].value_counts().rename_axis('Prediction').reset_index(name='Counts')
-            pc = alt.Chart(prediction_count).mark_bar().encode(x='Prediction', y='Counts', color='Prediction')
-            st.altair_chart(pc, use_container_width=True)
-
-    else:
+     else:
         add_page_visited_details("About", datetime.now(IST))
 
         st.write("Welcome to the Emotion Detection in Text App! This application utilizes the power of natural language processing and machine learning to analyze and identify emotions in textual data.")
@@ -104,11 +83,7 @@ def main():
 
         st.write("Our app offers real-time emotion detection, allowing you to instantly analyze the emotions expressed in any given text. Whether you're analyzing customer feedback, social media posts, or any other form of text, our app provides you with immediate insights into the emotions underlying the text.")
 
-        st.markdown("##### 2. Confidence Score")
-
-        st.write("Alongside the detected emotions, our app provides a confidence score, indicating the model's certainty in its predictions. This score helps you gauge the reliability of the emotion detection results and make more informed decisions based on the analysis.")
-
-        st.markdown("##### 3. User-friendly Interface")
+        st.markdown("##### 2. User-friendly Interface")
 
         st.write("We've designed our app with simplicity and usability in mind. The intuitive user interface allows you to effortlessly input text, view the results, and interpret the emotions detected. Whether you're a seasoned data scientist or someone with limited technical expertise, our app is accessible to all.")
 
@@ -122,7 +97,6 @@ def main():
           - Brand monitoring and reputation management
           - Content analysis and recommendation systems
           """)
-
 
 if __name__ == '__main__':
     main()
